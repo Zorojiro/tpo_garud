@@ -1,0 +1,59 @@
+name: TPO Company Notifier
+
+on:
+  # Run every 30 minutes
+  schedule:
+    - cron: '*/30 * * * *'
+  
+  # Allow manual trigger
+  workflow_dispatch:
+
+jobs:
+  check-companies:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Install Chrome
+        uses: browser-actions/setup-chrome@v1
+        with:
+          chrome-version: 'stable'
+      
+      - name: Install dependencies
+        run: |
+          pip install selenium webdriver-manager requests python-dotenv
+      
+      - name: Download previous data
+        uses: actions/cache@v4
+        with:
+          path: known_companies.json
+          key: known-companies-${{ github.run_id }}
+          restore-keys: |
+            known-companies-
+      
+      - name: Run TPO Notifier
+        env:
+          TPO_URL: ${{ secrets.TPO_URL }}
+          TPO_USERNAME: ${{ secrets.TPO_USERNAME }}
+          TPO_PASSWORD: ${{ secrets.TPO_PASSWORD }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          WHATSAPP_ENABLED: ${{ secrets.WHATSAPP_ENABLED }}
+          WHATSAPP_PHONE: ${{ secrets.WHATSAPP_PHONE }}
+          WHATSAPP_API_KEY: ${{ secrets.WHATSAPP_API_KEY }}
+        run: |
+          python tpo_notifier.py --once
+      
+      - name: Save company data
+        uses: actions/cache/save@v4
+        if: always()
+        with:
+          path: known_companies.json
+          key: known-companies-${{ github.run_id }}
