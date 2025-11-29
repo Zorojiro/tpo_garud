@@ -244,25 +244,56 @@ def login_to_tpo(driver) -> bool:
     try:
         logger.info(f"Navigating to {TPO_URL}")
         driver.get(TPO_URL)
-        time.sleep(5)  # Increased wait time
+        
+        # Wait for Vue.js SPA to fully load
+        logger.info("Waiting for page to fully load...")
+        time.sleep(10)  # Initial wait for SPA
+        
+        # Wait for any input field to appear (Vue.js renders dynamically)
+        wait = WebDriverWait(driver, 60)
+        
+        try:
+            # Wait for any input element to be present
+            wait.until(EC.presence_of_element_located((By.TAG_NAME, "input")))
+            logger.info("Found input elements on page")
+        except:
+            logger.warning("Timeout waiting for input elements")
+        
+        # Additional wait for Vue.js rendering
+        time.sleep(5)
         
         logger.info(f"Current URL: {driver.current_url}")
         logger.info(f"Page title: {driver.title}")
         
-        wait = WebDriverWait(driver, 30)  # Increased timeout
+        # Get all inputs on the page
+        all_inputs = driver.find_elements(By.TAG_NAME, "input")
+        logger.info(f"Found {len(all_inputs)} input elements")
+        
+        for idx, inp in enumerate(all_inputs):
+            try:
+                inp_type = inp.get_attribute("type")
+                inp_name = inp.get_attribute("name")
+                inp_placeholder = inp.get_attribute("placeholder")
+                logger.info(f"Input {idx}: type={inp_type}, name={inp_name}, placeholder={inp_placeholder}")
+            except:
+                pass
         
         # Try multiple selectors for username field
         username_selectors = [
-            (By.NAME, "email"),
-            (By.ID, "email"),
+            (By.CSS_SELECTOR, "input[type='text']"),
             (By.CSS_SELECTOR, "input[type='email']"),
-            (By.CSS_SELECTOR, "input[name='email']"),
+            (By.NAME, "email"),
+            (By.NAME, "username"),
+            (By.ID, "email"),
+            (By.ID, "username"),
             (By.CSS_SELECTOR, "input[placeholder*='email' i]"),
             (By.CSS_SELECTOR, "input[placeholder*='Email' i]"),
-            (By.CSS_SELECTOR, "input[type='text']"),
+            (By.CSS_SELECTOR, "input[placeholder*='user' i]"),
             (By.XPATH, "//input[@type='email']"),
+            (By.XPATH, "//input[@type='text']"),
             (By.XPATH, "//input[contains(@placeholder, 'mail')]"),
-            (By.XPATH, "(//input)[1]"),  # First input on page
+            (By.XPATH, "//input[contains(@class, 'email')]"),
+            (By.XPATH, "//input[contains(@class, 'user')]"),
         ]
         
         username_field = None
@@ -270,16 +301,41 @@ def login_to_tpo(driver) -> bool:
             try:
                 elements = driver.find_elements(by, value)
                 if elements:
-                    username_field = elements[0]
-                    logger.info(f"Found username field with: {by} = {value}")
-                    break
+                    for elem in elements:
+                        if elem.is_displayed():
+                            username_field = elem
+                            logger.info(f"Found username field with: {by} = {value}")
+                            break
+                    if username_field:
+                        break
             except Exception as e:
                 continue
         
+        # If still not found, try the first visible input
+        if not username_field and all_inputs:
+            for inp in all_inputs:
+                try:
+                    if inp.is_displayed() and inp.get_attribute("type") != "hidden":
+                        username_field = inp
+                        logger.info("Using first visible input as username field")
+                        break
+                except:
+                    continue
+        
         if not username_field:
-            # Log page source for debugging
+            # Log more page source for debugging
             logger.error("Could not find username field")
-            logger.info(f"Page source preview: {driver.page_source[:2000]}")
+            page_source = driver.page_source
+            logger.info(f"Full page length: {len(page_source)}")
+            # Look for Vue app div
+            if "id=\"app\"" in page_source or "id='app'" in page_source:
+                logger.info("Vue.js app div found - SPA detected")
+            # Save screenshot for debugging
+            try:
+                driver.save_screenshot("/tmp/login_page.png")
+                logger.info("Screenshot saved to /tmp/login_page.png")
+            except:
+                pass
             return False
         
         # Clear and fill username
@@ -304,9 +360,13 @@ def login_to_tpo(driver) -> bool:
             try:
                 elements = driver.find_elements(by, value)
                 if elements:
-                    password_field = elements[0]
-                    logger.info(f"Found password field with: {by} = {value}")
-                    break
+                    for elem in elements:
+                        if elem.is_displayed():
+                            password_field = elem
+                            logger.info(f"Found password field with: {by} = {value}")
+                            break
+                    if password_field:
+                        break
             except:
                 continue
         
@@ -324,10 +384,15 @@ def login_to_tpo(driver) -> bool:
             (By.CSS_SELECTOR, "button[type='submit']"),
             (By.XPATH, "//button[@type='submit']"),
             (By.XPATH, "//button[contains(text(), 'Login')]"),
+            (By.XPATH, "//button[contains(text(), 'login')]"),
             (By.XPATH, "//button[contains(text(), 'Sign')]"),
+            (By.XPATH, "//button[contains(text(), 'SIGN')]"),
             (By.XPATH, "//input[@type='submit']"),
+            (By.CSS_SELECTOR, "button.v-btn"),
             (By.CSS_SELECTOR, "button.login"),
             (By.CSS_SELECTOR, "button"),
+            (By.XPATH, "//span[contains(text(), 'Login')]/ancestor::button"),
+            (By.XPATH, "//span[contains(text(), 'SIGN')]/ancestor::button"),
         ]
         
         login_btn = None
@@ -335,9 +400,13 @@ def login_to_tpo(driver) -> bool:
             try:
                 elements = driver.find_elements(by, value)
                 if elements:
-                    login_btn = elements[0]
-                    logger.info(f"Found login button with: {by} = {value}")
-                    break
+                    for elem in elements:
+                        if elem.is_displayed():
+                            login_btn = elem
+                            logger.info(f"Found login button with: {by} = {value}")
+                            break
+                    if login_btn:
+                        break
             except:
                 continue
         
@@ -350,7 +419,7 @@ def login_to_tpo(driver) -> bool:
             password_field.send_keys(Keys.RETURN)
             logger.info("Pressed Enter to submit")
         
-        time.sleep(7)  # Wait for login to complete
+        time.sleep(10)  # Wait for login to complete
         
         logger.info(f"After login URL: {driver.current_url}")
         
