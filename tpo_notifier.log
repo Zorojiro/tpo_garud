@@ -1,0 +1,141 @@
+2025-11-29 12:43:41,729 - INFO - Running single check...
+2025-11-29 12:43:41,729 - INFO - ==================================================
+2025-11-29 12:43:41,729 - INFO - Starting company check...
+2025-11-29 12:43:41,756 - INFO - ====== WebDriver manager ======
+2025-11-29 12:43:42,675 - INFO - Get LATEST chromedriver version for google-chrome
+2025-11-29 12:43:43,266 - INFO - Get LATEST chromedriver version for google-chrome
+2025-11-29 12:43:43,732 - INFO - Driver [C:\Users\shubh\.wdm\drivers\chromedriver\win64\142.0.7444.175\chromedriver-win32/chromedriver.exe] found in cache
+2025-11-29 12:44:28,281 - ERROR - Login may have failed. Current URL: https://tpo.vierp.in/home
+2025-11-29 12:44:34,520 - INFO - Found 10 rows in table
+2025-11-29 12:44:34,900 - INFO - Scraped 10 companies
+2025-11-29 12:44:34,900 - INFO - Found 10 new companies!
+2025-11-29 12:44:36,039 - INFO - Telegram message sent successfully
+2025-11-29 12:44:38,433 - INFO - Telegram message sent successfully
+2025-11-29 12:44:38,935 - INFO - Notified about: Miba
+2025-11-29 12:44:40,001 - INFO - Telegram message sent successfully
+2025-11-29 12:44:40,505 - INFO - Notified about: CheckRed India Pvt Ltd
+2025-11-29 12:44:41,711 - INFO - Telegram message sent successfully
+2025-11-29 12:44:42,214 - INFO - Notified about: Gen Digital
+2025-11-29 12:44:43,292 - INFO - Telegram message sent successfully
+2025-11-29 12:44:43,795 - INFO - Notified about: OPmobility
+2025-11-29 12:44:44,927 - INFO - Telegram message sent successfully
+2025-11-29 12:44:45,429 - INFO - Notified about: Studium
+2025-11-29 12:44:46,682 - INFO - Telegram message sent successfully
+2025-11-29 12:44:47,184 - INFO - Notified about: VOIS (Vodafone)
+2025-11-29 12:44:48,487 - INFO - Telegram message sent successfully
+2025-11-29 12:44:48,989 - INFO - Notified about: Black & Veatch
+2025-11-29 12:44:50,404 - INFO - Telegram message sent successfully
+2025-11-29 12:44:50,906 - INFO - Notified about: KPMG
+2025-11-29 12:44:52,100 - INFO - Telegram message sent successfully
+2025-11-29 12:44:52,603 - INFO - Notified about: Jyesta Corporate Entity
+2025-11-29 12:44:54,855 - INFO - Telegram message sent successfully
+2025-11-29 12:44:55,358 - INFO - Notified about: Spaulding Ridge
+2025-11-29 12:44:55,360 - INFO - Saved 10 companies to known_companies.json
+2025-11-29 12:44:57,574 - INFO - Browser closed
+2025-11-29 12:44:57,574 - INFO - Check complete
+2025-11-29 12:48:34,267 - INFO - Running single check...
+2025-11-29 12:48:34,268 - INFO - ==================================================
+2025-11-29 12:48:34,268 - INFO - Starting company check...
+2025-11-29 12:48:34,300 - INFO - ====== WebDriver manager ======
+2025-11-29 12:48:35,209 - INFO - Get LATEST chromedriver version for google-chrome
+2025-11-29 12:48:35,747 - INFO - Get LATEST chromedriver version for google-chrome
+2025-11-29 12:48:36,226 - INFO - Driver [C:\Users\shubh\.wdm\drivers\chromedriver\win64\142.0.7444.175\chromedriver-win32/chromedriver.exe] found in cache
+2025-11-29 12:49:24,295 - ERROR - Login may have failed. Current URL: https://tpo.vierp.in/home
+2025-11-29 12:49:30,523 - INFO - Found 10 rows in table
+2025-11-29 12:49:30,998 - INFO - Getting details for [1/10] Miba
+2025-11-29 12:49:35,406 - INFO - Getting details for [2/10] CheckRed India Pvt Ltd
+2025-11-29 12:49:39,953 - INFO - Getting details for [3/10] Gen Digital
+2025-11-29 12:49:44,493 - INFO - Getting details for [4/10] OPmobility
+2025-11-29 12:49:49,075 - INFO - Getting details for [5/10] Studium
+2025-11-29 12:49:53,678 - INFO - Getting details for [6/10] VOIS (Vodafone)
+2025-11-29 12:49:58,309 - INFO - Getting details for [7/10] Black & Veatch
+2025-11-29 12:50:00,784 - INFO - Getting details for [8/10] KPMG
+2025-11-29 12:50:05,276 - INFO - Getting details for [9/10] Jyesta Corporate Entity
+2025-11-29 12:50:09,774 - INFO - Getting details for [10/10] Spaulding Ridge
+2025-11-29 12:50:14,351 - INFO - Scraped 10 companies with details
+2025-11-29 12:50:14,351 - INFO - No new companies found
+2025-11-29 12:50:14,353 - INFO - Saved 10 companies to known_companies.json
+2025-11-29 12:50:16,470 - INFO - Browser closed
+2025-11-29 12:50:16,471 - INFO - Check complete
+2025-11-29 12:51:49,461 - INFO - Running single check...
+2025-11-29 12:51:49,461 - INFO - ==================================================
+2025-11-29 12:51:49,462 - INFO - Starting company check...
+2025-11-29 12:51:49,507 - INFO - ====== WebDriver manager ======
+2025-11-29 12:51:50,414 - INFO - Get LATEST chromedriver version for google-chrome
+2025-11-29 12:51:51,227 - INFO - Get LATEST chromedriver version for google-chrome
+2025-11-29 12:51:51,749 - INFO - Driver [C:\Users\shubh\.wdm\drivers\chromedriver\win64\142.0.7444.175\chromedriver-win32/chromedriver.exe] found in cache
+2025-11-29 12:52:40,356 - ERROR - Login may have failed. Current URL: https://tpo.vierp.in/home
+2025-11-29 12:52:45,992 - INFO - Found 0 rows in table
+2025-11-29 12:52:45,993 - INFO - Scraped 0 companies with details
+2025-11-29 12:52:45,993 - WARNING - No companies found, skipping update
+2025-11-29 12:52:48,189 - INFO - Browser closed
+2025-11-29 12:52:48,189 - INFO - Check complete
+2025-11-29 13:03:36,029 - INFO - Running single check...
+2025-11-29 13:03:36,030 - INFO - ==================================================
+2025-11-29 13:03:36,030 - INFO - Starting company check...
+2025-11-29 13:03:36,048 - INFO - ====== WebDriver manager ======
+2025-11-29 13:03:36,968 - INFO - Get LATEST chromedriver version for google-chrome
+2025-11-29 13:03:37,427 - INFO - Get LATEST chromedriver version for google-chrome
+2025-11-29 13:03:37,910 - INFO - Driver [C:\Users\shubh\.wdm\drivers\chromedriver\win64\142.0.7444.175\chromedriver-win32/chromedriver.exe] found in cache
+2025-11-29 13:04:21,373 - ERROR - Login may have failed. Current URL: https://tpo.vierp.in/home
+2025-11-29 13:04:27,574 - INFO - Found 10 rows in table
+2025-11-29 13:04:27,978 - INFO - Getting details for [1/10] Miba
+2025-11-29 13:04:32,375 - INFO - Getting details for [2/10] CheckRed India Pvt Ltd
+2025-11-29 13:04:34,874 - INFO - Getting details for [3/10] Gen Digital
+2025-11-29 13:04:39,433 - INFO - Getting details for [4/10] OPmobility
+2025-11-29 13:04:43,976 - INFO - Getting details for [5/10] Studium
+2025-11-29 13:04:48,512 - INFO - Getting details for [6/10] VOIS (Vodafone)
+2025-11-29 13:04:53,059 - INFO - Getting details for [7/10] Black & Veatch
+2025-11-29 13:04:57,506 - INFO - Getting details for [8/10] KPMG
+2025-11-29 13:05:02,240 - INFO - Getting details for [9/10] Jyesta Corporate Entity
+2025-11-29 13:05:06,775 - INFO - Getting details for [10/10] Spaulding Ridge
+2025-11-29 13:05:11,373 - INFO - Scraped 10 companies with details
+2025-11-29 13:05:11,374 - INFO - No new companies found
+2025-11-29 13:05:11,375 - INFO - Saved 10 companies to known_companies.json
+2025-11-29 13:05:13,538 - INFO - Browser closed
+2025-11-29 13:05:13,538 - INFO - Check complete
+2025-11-29 13:05:27,301 - INFO - Running single check...
+2025-11-29 13:05:27,301 - INFO - ==================================================
+2025-11-29 13:05:27,301 - INFO - Starting company check...
+2025-11-29 13:05:27,324 - INFO - ====== WebDriver manager ======
+2025-11-29 13:05:28,171 - INFO - Get LATEST chromedriver version for google-chrome
+2025-11-29 13:05:28,629 - INFO - Get LATEST chromedriver version for google-chrome
+2025-11-29 13:05:29,089 - INFO - Driver [C:\Users\shubh\.wdm\drivers\chromedriver\win64\142.0.7444.175\chromedriver-win32/chromedriver.exe] found in cache
+2025-11-29 13:06:17,713 - ERROR - Login may have failed. Current URL: https://tpo.vierp.in/home
+2025-11-29 13:06:23,909 - INFO - Found 10 rows in table
+2025-11-29 13:06:24,310 - INFO - Getting details for [1/10] Miba
+2025-11-29 13:06:28,683 - INFO - Getting details for [2/10] CheckRed India Pvt Ltd
+2025-11-29 13:06:33,133 - INFO - Getting details for [3/10] Gen Digital
+2025-11-29 13:06:35,503 - INFO - Getting details for [4/10] OPmobility
+2025-11-29 13:06:39,898 - INFO - Getting details for [5/10] Studium
+2025-11-29 13:06:44,374 - INFO - Getting details for [6/10] VOIS (Vodafone)
+2025-11-29 13:06:48,789 - INFO - Getting details for [7/10] Black & Veatch
+2025-11-29 13:06:53,351 - INFO - Getting details for [8/10] KPMG
+2025-11-29 13:06:57,833 - INFO - Getting details for [9/10] Jyesta Corporate Entity
+2025-11-29 13:07:02,389 - INFO - Getting details for [10/10] Spaulding Ridge
+2025-11-29 13:07:06,896 - INFO - Scraped 10 companies with details
+2025-11-29 13:07:06,896 - INFO - Found 10 new companies!
+2025-11-29 13:07:08,586 - INFO - Telegram message sent successfully
+2025-11-29 13:07:10,142 - INFO - Telegram message sent successfully
+2025-11-29 13:07:10,644 - INFO - Notified about: Miba
+2025-11-29 13:07:11,718 - INFO - Telegram message sent successfully
+2025-11-29 13:07:12,220 - INFO - Notified about: CheckRed India Pvt Ltd
+2025-11-29 13:07:13,274 - INFO - Telegram message sent successfully
+2025-11-29 13:07:13,776 - INFO - Notified about: Gen Digital
+2025-11-29 13:07:14,841 - INFO - Telegram message sent successfully
+2025-11-29 13:07:15,342 - INFO - Notified about: OPmobility
+2025-11-29 13:07:17,339 - INFO - Telegram message sent successfully
+2025-11-29 13:07:17,843 - INFO - Notified about: Studium
+2025-11-29 13:07:19,703 - INFO - Telegram message sent successfully
+2025-11-29 13:07:20,205 - INFO - Notified about: VOIS (Vodafone)
+2025-11-29 13:07:21,287 - INFO - Telegram message sent successfully
+2025-11-29 13:07:21,790 - INFO - Notified about: Black & Veatch
+2025-11-29 13:07:23,571 - INFO - Telegram message sent successfully
+2025-11-29 13:07:24,073 - INFO - Notified about: KPMG
+2025-11-29 13:07:25,233 - INFO - Telegram message sent successfully
+2025-11-29 13:07:25,735 - INFO - Notified about: Jyesta Corporate Entity
+2025-11-29 13:07:26,954 - INFO - Telegram message sent successfully
+2025-11-29 13:07:27,457 - INFO - Notified about: Spaulding Ridge
+2025-11-29 13:07:27,460 - INFO - Saved 10 companies to known_companies.json
+2025-11-29 13:07:29,650 - INFO - Browser closed
+2025-11-29 13:07:29,650 - INFO - Check complete

@@ -1,0 +1,125 @@
+{
+  "companies": [
+    {
+      "Company": "Miba",
+      "Registration Start": "28-Nov-2025 17:02",
+      "Registration End": "30-Nov-2025 17:02",
+      "Max Package (LPA)": "6",
+      "Min Package (LPA)": "6",
+      "Placement Type": "Placement",
+      "Academic Year": "2025-26",
+      "Max Stipend": ": 0",
+      "Min Stipend": ": 0",
+      "Job Locations": ": Pune"
+    },
+    {
+      "Company": "CheckRed India Pvt Ltd",
+      "Registration Start": "28-Nov-2025 16:56",
+      "Registration End": "30-Nov-2025 16:56",
+      "Max Package (LPA)": "7.5",
+      "Min Package (LPA)": "0",
+      "Placement Type": "Internship + Performance based PPO",
+      "Academic Year": "2025-26",
+      "Max Stipend": ": 30000",
+      "Min Stipend": ": 30000",
+      "Job Locations": "Min Stipend"
+    },
+    {
+      "Company": "Gen Digital",
+      "Registration Start": "28-Nov-2025 14:23",
+      "Registration End": "01-Dec-2025 10:00",
+      "Max Package (LPA)": "11",
+      "Min Package (LPA)": "10",
+      "Placement Type": "Internship + Performance based PPO",
+      "Academic Year": "2025-26",
+      "Max Stipend": "",
+      "Min Stipend": "",
+      "Job Locations": ""
+    },
+    {
+      "Company": "OPmobility",
+      "Registration Start": "27-Nov-2025 16:07",
+      "Registration End": "28-Nov-2025 11:00",
+      "Max Package (LPA)": "545000",
+      "Min Package (LPA)": "545000",
+      "Placement Type": "Placement",
+      "Academic Year": "2025-26",
+      "Max Stipend": ": 0",
+      "Min Stipend": ": 0",
+      "Job Locations": ": Pune"
+    },
+    {
+      "Company": "Studium",
+      "Registration Start": "27-Nov-2025 15:21",
+      "Registration End": "29-Nov-2025 10:00",
+      "Max Package (LPA)": "0",
+      "Min Package (LPA)": "0",
+      "Placement Type": "Internship + Performance based PPO",
+      "Academic Year": "2025-26",
+      "Max Stipend": ": 0",
+      "Min Stipend": ": 0",
+      "Job Locations": "Min Stipend"
+    },
+    {
+      "Company": "VOIS (Vodafone)",
+      "Registration Start": "27-Nov-2025 14:32",
+      "Registration End": "28-Nov-2025 11:00",
+      "Max Package (LPA)": "4",
+      "Min Package (LPA)": "4",
+      "Placement Type": "Internship + Performance based PPO",
+      "Academic Year": "2025-26",
+      "Max Stipend": ": 10000",
+      "Min Stipend": ": 10000",
+      "Job Locations": ": Pune"
+    },
+    {
+      "Company": "Black & Veatch",
+      "Registration Start": "27-Nov-2025 12:02",
+      "Registration End": "28-Nov-2025 10:00",
+      "Max Package (LPA)": "9",
+      "Min Package (LPA)": "6",
+      "Placement Type": "Internship + Performance based PPO",
+      "Academic Year": "2025-26",
+      "Max Stipend": ": 40000",
+      "Min Stipend": ": 20000",
+      "Job Locations": ": Mumbai Pune"
+    },
+    {
+      "Company": "KPMG",
+      "Registration Start": "26-Nov-2025 16:59",
+      "Registration End": "27-Nov-2025 10:00",
+      "Max Package (LPA)": "5",
+      "Min Package (LPA)": "5",
+      "Placement Type": "Placement",
+      "Academic Year": "2025-26",
+      "Max Stipend": ": 0",
+      "Min Stipend": ": 0",
+      "Job Locations": ": Gurgaon Chennai Pune"
+    },
+    {
+      "Company": "Jyesta Corporate Entity",
+      "Registration Start": "26-Nov-2025 16:51",
+      "Registration End": "27-Nov-2025 11:00",
+      "Max Package (LPA)": "9",
+      "Min Package (LPA)": "7",
+      "Placement Type": "Internship + Performance based PPO",
+      "Academic Year": "2025-26",
+      "Max Stipend": ": 18000",
+      "Min Stipend": ": 15000",
+      "Job Locations": ": Bangalore"
+    },
+    {
+      "Company": "Spaulding Ridge",
+      "Registration Start": "26-Nov-2025 16:38",
+      "Registration End": "27-Nov-2025 11:00",
+      "Max Package (LPA)": "5",
+      "Min Package (LPA)": "5",
+      "Placement Type": "Internship + Performance based PPO",
+      "Academic Year": "2025-26",
+      "Max Stipend": ": 20000",
+      "Min Stipend": ": 20000",
+      "Job Locations": ": Bangalore Jaypur"
+    }
+  ],
+  "last_check": "2025-11-29T13:07:27.458580"
+}
