@@ -40,6 +40,14 @@ TPO_PASSWORD = os.getenv("TPO_PASSWORD", "Satara@123")
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "8266203414:AAGEzlTposHWxXKoVSa5AkSts3UhUOnlVgs")
 TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID", "7869927462")
 
+# WhatsApp Configuration (CallMeBot API)
+# To get API key: 1) Save +34 644 33 66 63 in contacts
+#                 2) Send "I allow callmebot to send me messages" via WhatsApp
+#                 3) You'll receive your API key
+WHATSAPP_ENABLED = os.getenv("WHATSAPP_ENABLED", "false").lower() == "true"
+WHATSAPP_PHONE = os.getenv("WHATSAPP_PHONE", "")  # Your phone with country code, e.g., +919876543210
+WHATSAPP_API_KEY = os.getenv("WHATSAPP_API_KEY", "")  # API key from CallMeBot
+
 # Check interval in seconds (default: 30 minutes)
 CHECK_INTERVAL = int(os.getenv("CHECK_INTERVAL", "1800"))
 
@@ -98,6 +106,69 @@ def send_telegram_document(file_path: str, caption: str = "") -> bool:
 
 
 # ============================================
+# WHATSAPP FUNCTIONS (CallMeBot API)
+# ============================================
+
+def html_to_whatsapp(html_text: str) -> str:
+    """Convert HTML formatting to WhatsApp formatting"""
+    import re
+    # Convert HTML bold to WhatsApp bold
+    text = re.sub(r'<b>(.*?)</b>', r'*\1*', html_text)
+    text = re.sub(r'<strong>(.*?)</strong>', r'*\1*', text)
+    # Convert HTML italic to WhatsApp italic
+    text = re.sub(r'<i>(.*?)</i>', r'_\1_', text)
+    text = re.sub(r'<em>(.*?)</em>', r'_\1_', text)
+    # Remove other HTML tags
+    text = re.sub(r'<[^>]+>', '', text)
+    return text.strip()
+
+
+def send_whatsapp_message(message: str) -> bool:
+    """Send a message via WhatsApp using CallMeBot API"""
+    if not WHATSAPP_ENABLED:
+        return False
+    
+    if not WHATSAPP_PHONE or not WHATSAPP_API_KEY:
+        logger.warning("WhatsApp not configured: Missing phone or API key")
+        return False
+    
+    try:
+        # Convert HTML to WhatsApp formatting
+        whatsapp_text = html_to_whatsapp(message)
+        
+        # URL encode the message
+        from urllib.parse import quote
+        encoded_message = quote(whatsapp_text)
+        
+        # Clean phone number (remove spaces, keep + and digits)
+        phone = ''.join(c for c in WHATSAPP_PHONE if c.isdigit() or c == '+')
+        
+        # CallMeBot API endpoint
+        url = f"https://api.callmebot.com/whatsapp.php?phone={phone}&text={encoded_message}&apikey={WHATSAPP_API_KEY}"
+        
+        response = requests.get(url, timeout=30)
+        
+        if response.status_code == 200:
+            logger.info("WhatsApp message sent successfully")
+            return True
+        else:
+            logger.error(f"WhatsApp error: {response.status_code} - {response.text}")
+            return False
+            
+    except Exception as e:
+        logger.error(f"Failed to send WhatsApp message: {e}")
+        return False
+
+
+def send_notification(message: str) -> bool:
+    """Send notification to both Telegram and WhatsApp"""
+    telegram_sent = send_telegram_message(message)
+    whatsapp_sent = send_whatsapp_message(message)
+    
+    return telegram_sent or whatsapp_sent
+
+
+# ============================================
 # DATA PERSISTENCE
 # ============================================
 
@@ -136,17 +207,20 @@ def get_company_hash(company: dict) -> str:
 def create_driver():
     """Create a headless Chrome driver"""
     chrome_options = Options()
-    chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--headless=new")
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-shm-usage")
     chrome_options.add_argument("--disable-gpu")
     chrome_options.add_argument("--window-size=1920,1080")
     chrome_options.add_argument("--disable-extensions")
     chrome_options.add_argument("--disable-infobars")
-    chrome_options.add_argument("--remote-debugging-port=9222")
+    chrome_options.add_argument("--disable-blink-features=AutomationControlled")
+    chrome_options.add_argument("--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
     
-    # For cloud hosting (use system Chrome)
-    chrome_options.binary_location = os.getenv("CHROME_BINARY", "")
+    # Only set binary location if explicitly provided
+    chrome_binary = os.getenv("CHROME_BINARY", "")
+    if chrome_binary:
+        chrome_options.binary_location = chrome_binary
     
     try:
         # Try with webdriver-manager first
@@ -155,9 +229,12 @@ def create_driver():
             service=Service(ChromeDriverManager().install()),
             options=chrome_options
         )
-    except:
+        logger.info("Created Chrome driver with webdriver-manager")
+    except Exception as e:
+        logger.warning(f"webdriver-manager failed: {e}, trying default")
         # Fallback for cloud hosting
         driver = webdriver.Chrome(options=chrome_options)
+        logger.info("Created Chrome driver with default")
     
     return driver
 
@@ -165,53 +242,130 @@ def create_driver():
 def login_to_tpo(driver) -> bool:
     """Login to TPO portal"""
     try:
+        logger.info(f"Navigating to {TPO_URL}")
         driver.get(TPO_URL)
-        time.sleep(3)
+        time.sleep(5)  # Increased wait time
         
-        wait = WebDriverWait(driver, 15)
+        logger.info(f"Current URL: {driver.current_url}")
+        logger.info(f"Page title: {driver.title}")
         
-        # Find and fill username
+        wait = WebDriverWait(driver, 30)  # Increased timeout
+        
+        # Try multiple selectors for username field
         username_selectors = [
             (By.NAME, "email"),
+            (By.ID, "email"),
             (By.CSS_SELECTOR, "input[type='email']"),
+            (By.CSS_SELECTOR, "input[name='email']"),
+            (By.CSS_SELECTOR, "input[placeholder*='email' i]"),
+            (By.CSS_SELECTOR, "input[placeholder*='Email' i]"),
             (By.CSS_SELECTOR, "input[type='text']"),
+            (By.XPATH, "//input[@type='email']"),
+            (By.XPATH, "//input[contains(@placeholder, 'mail')]"),
+            (By.XPATH, "(//input)[1]"),  # First input on page
         ]
         
         username_field = None
         for by, value in username_selectors:
             try:
-                username_field = wait.until(EC.presence_of_element_located((by, value)))
-                break
-            except:
+                elements = driver.find_elements(by, value)
+                if elements:
+                    username_field = elements[0]
+                    logger.info(f"Found username field with: {by} = {value}")
+                    break
+            except Exception as e:
                 continue
         
         if not username_field:
+            # Log page source for debugging
             logger.error("Could not find username field")
+            logger.info(f"Page source preview: {driver.page_source[:2000]}")
             return False
         
-        username_field.clear()
+        # Clear and fill username
+        try:
+            username_field.clear()
+        except:
+            pass
         username_field.send_keys(TPO_USERNAME)
+        logger.info(f"Entered username: {TPO_USERNAME}")
+        time.sleep(1)
         
         # Find and fill password
-        password_field = driver.find_element(By.CSS_SELECTOR, "input[type='password']")
+        password_selectors = [
+            (By.CSS_SELECTOR, "input[type='password']"),
+            (By.NAME, "password"),
+            (By.ID, "password"),
+            (By.XPATH, "//input[@type='password']"),
+        ]
+        
+        password_field = None
+        for by, value in password_selectors:
+            try:
+                elements = driver.find_elements(by, value)
+                if elements:
+                    password_field = elements[0]
+                    logger.info(f"Found password field with: {by} = {value}")
+                    break
+            except:
+                continue
+        
+        if not password_field:
+            logger.error("Could not find password field")
+            return False
+        
         password_field.clear()
         password_field.send_keys(TPO_PASSWORD)
+        logger.info("Entered password")
+        time.sleep(1)
         
-        # Click login
-        login_btn = driver.find_element(By.CSS_SELECTOR, "button[type='submit']")
-        login_btn.click()
+        # Find and click login button
+        login_selectors = [
+            (By.CSS_SELECTOR, "button[type='submit']"),
+            (By.XPATH, "//button[@type='submit']"),
+            (By.XPATH, "//button[contains(text(), 'Login')]"),
+            (By.XPATH, "//button[contains(text(), 'Sign')]"),
+            (By.XPATH, "//input[@type='submit']"),
+            (By.CSS_SELECTOR, "button.login"),
+            (By.CSS_SELECTOR, "button"),
+        ]
         
-        time.sleep(5)
+        login_btn = None
+        for by, value in login_selectors:
+            try:
+                elements = driver.find_elements(by, value)
+                if elements:
+                    login_btn = elements[0]
+                    logger.info(f"Found login button with: {by} = {value}")
+                    break
+            except:
+                continue
         
-        if "dashboard" in driver.current_url.lower():
-            logger.info("Login successful")
+        if login_btn:
+            driver.execute_script("arguments[0].click();", login_btn)
+            logger.info("Clicked login button")
+        else:
+            # Try pressing Enter instead
+            from selenium.webdriver.common.keys import Keys
+            password_field.send_keys(Keys.RETURN)
+            logger.info("Pressed Enter to submit")
+        
+        time.sleep(7)  # Wait for login to complete
+        
+        logger.info(f"After login URL: {driver.current_url}")
+        
+        if "dashboard" in driver.current_url.lower() or "company" in driver.current_url.lower():
+            logger.info("Login successful!")
             return True
         else:
-            logger.error(f"Login may have failed. Current URL: {driver.current_url}")
-            return True  # Try to continue anyway
+            logger.warning(f"Login might have failed. Current URL: {driver.current_url}")
+            # Try to continue anyway - maybe we're logged in
+            return True
             
     except Exception as e:
         logger.error(f"Login error: {e}")
+        import traceback
+        logger.error(traceback.format_exc())
         return False
 
 
@@ -408,14 +562,14 @@ def check_for_new_companies():
 📅 {datetime.now().strftime('%d-%b-%Y %H:%M')}
 {"="*35}
 """
-            send_telegram_message(header)
-            time.sleep(0.5)
+            send_notification(header)
+            time.sleep(1)  # CallMeBot rate limit
             
             # Send each new company
             for company in new_companies:
                 msg = format_company_notification(company, is_new=True)
-                send_telegram_message(msg)
-                time.sleep(0.5)
+                send_notification(msg)
+                time.sleep(1)  # CallMeBot rate limit
                 logger.info(f"Notified about: {company['Company']}")
         else:
             logger.info("No new companies found")
@@ -426,7 +580,7 @@ def check_for_new_companies():
         
     except Exception as e:
         logger.error(f"Error during check: {e}")
-        send_telegram_message(f"⚠️ TPO Notifier Error: {str(e)[:200]}")
+        send_notification(f"⚠️ TPO Notifier Error: {str(e)[:200]}")
     
     finally:
         if driver:
@@ -443,15 +597,17 @@ def run_service():
     logger.info("=" * 50)
     logger.info("TPO Company Notification Service Started")
     logger.info(f"Check interval: {CHECK_INTERVAL} seconds ({CHECK_INTERVAL/60:.1f} minutes)")
+    logger.info(f"WhatsApp enabled: {WHATSAPP_ENABLED}")
     logger.info("=" * 50)
     
     # Send startup notification
-    send_telegram_message(f"""
+    send_notification(f"""
 🚀 <b>TPO Notifier Started!</b>
 
 📊 Monitoring: {TPO_URL}
 ⏰ Check Interval: {CHECK_INTERVAL/60:.0f} minutes
-📱 Notifications will be sent here
+📱 Telegram: ✅ Enabled
+📱 WhatsApp: {'✅ Enabled' if WHATSAPP_ENABLED else '❌ Disabled'}
 
 <i>Service started at {datetime.now().strftime('%d-%b-%Y %H:%M')}</i>
 """)
@@ -467,7 +623,7 @@ def run_service():
             check_for_new_companies()
         except KeyboardInterrupt:
             logger.info("Service stopped by user")
-            send_telegram_message("🛑 TPO Notifier Service Stopped")
+            send_notification("🛑 TPO Notifier Service Stopped")
             break
         except Exception as e:
             logger.error(f"Service error: {e}")
